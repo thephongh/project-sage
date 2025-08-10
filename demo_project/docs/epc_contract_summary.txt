@@ -1,0 +1,44 @@
+EPC CONTRACT SUMMARY
+
+Contract Number: EPC-2024-001
+Date: March 15, 2024
+Contractor: Vietnam Solar Tech Co.
+
+SCOPE OF WORK:
+- Engineering design and detailed drawings
+- Procurement of all major equipment
+- Construction and installation services
+- Testing and commissioning
+- 2-year warranty period
+
+KEY COMMERCIAL TERMS:
+- Contract Price: $35,000,000 USD (Fixed Price)
+- Payment Terms: 
+  * 10% advance payment upon contract signing
+  * 20% upon equipment delivery to site
+  * 60% progress payments based on milestones
+  * 10% retention released after warranty period
+
+MAJOR EQUIPMENT INCLUDED:
+- 92,593 solar panels (540W each)
+- 20 central inverters (2.5MW each)
+- Electrical equipment and cables
+- Mounting structures and foundations
+- SCADA and monitoring systems
+
+DELIVERY SCHEDULE:
+- Engineering completion: 4 months
+- Equipment delivery: 8 months
+- Construction completion: 18 months
+- Commercial operation: 20 months
+
+PENALTIES AND BONUSES:
+- Liquidated damages: $50,000 per week for delay
+- Early completion bonus: $25,000 per week
+- Performance guarantees required for all major equipment
+
+WARRANTIES:
+- Solar panels: 25 years performance warranty
+- Inverters: 5 years full warranty
+- Construction work: 2 years warranty
+- System performance: 95% availability guarantee
