@@ -1,63 +1,193 @@
 # Project Sage
 
-An intelligent AI assistant for complex project management that creates a self-contained knowledge base from your project documents.
+An intelligent AI assistant for complex project management that creates a self-contained knowledge base from your project documents with advanced multilingual support and dynamic model switching.
 
-## Features
+## ✨ Key Features
 
-- **Multi-format Support**: Process PDFs (including scanned), DOCX, PPTX, XLSX, TXT, and MD files
-- **OCR Capability**: Extract text from scanned documents using Tesseract OCR
-- **Multilingual**: Support for documents in multiple languages (Vietnamese, Chinese, Japanese, etc.)
-- **RAG-powered Q&A**: Ask questions about your project and get contextual answers
-- **Enhanced GUI Interface**: 
-  - File browser showing all indexed documents
-  - Vector database viewer with document chunks
-  - Interactive query interface
-  - Real-time project statistics
-  - Configuration management
-- **Simple Setup**: Easy initialization with a graphical setup wizard
-- **Multiple LLM Providers**: Support for Google Gemini, Anthropic Claude, OpenAI GPT, and **Ollama (Local)**
-- **Latest Models**: Claude 4, GPT-5, GPT-4o, o1-preview, Claude 3.5 Sonnet, and more
-- **Local AI Support**: Run models locally with Ollama - no API keys needed!
+### 📄 **Document Processing**
+- **Multi-format Support**: PDFs (including scanned), DOCX, PPTX, XLSX, TXT, and MD files
+- **Advanced OCR**: Tesseract OCR with **automatic language pack installation**
+- **Multilingual Excellence**: Optimized for Vietnamese, Chinese, Japanese, Korean, and 12+ languages
+- **Smart Chunking**: Intelligent document segmentation for optimal retrieval
 
-## Installation
+### 🤖 **AI & Models**
+- **46+ Models**: Latest Claude 4, GPT-5, Gemini 2.0, o1-preview, and more
+- **4 Providers**: Google Gemini, Anthropic Claude, OpenAI GPT, Ollama (Local)
+- **Dynamic Model Switching**: Change models mid-conversation for different tasks
+- **Smart Recommendations**: AI suggests optimal models by use case
+- **Local AI Support**: Complete privacy with Ollama - no API keys needed!
+
+### 🇻🇳 **Vietnamese Content Optimization**
+- **Best-in-class**: Google embeddings optimized for Vietnamese text
+- **Auto-install**: Vietnamese OCR language packs installed automatically
+- **Scanned PDFs**: Superior processing of Vietnamese scanned documents
+- **Semantic Search**: Advanced Vietnamese text understanding
+
+### 💬 **Interactive Interfaces**
+- **Enhanced GUI**: 5-tab interface with file operations and model switching
+- **Terminal Chat**: Interactive chat mode like Claude Code with conversation history
+- **Model Tooltips**: Comprehensive model descriptions and recommendations
+- **Real-time Switching**: Change models during chat for optimal performance
+
+## 🚀 Quick Installation
 
 ### Prerequisites
 
-1. Python 3.9 or higher
-2. Tesseract OCR (required for scanned documents)
+1. **Python 3.9+** - Required
+2. **Tesseract OCR** - For scanned documents (language packs auto-installed!)
 
 #### Installing Tesseract OCR
 
 **macOS:**
 ```bash
 brew install tesseract
-brew install tesseract-lang  # For additional language support
+# Language packs installed automatically by Sage setup
 ```
 
 **Ubuntu/Debian:**
 ```bash
 sudo apt-get update
 sudo apt-get install tesseract-ocr
-sudo apt-get install tesseract-ocr-vie  # For Vietnamese
-sudo apt-get install tesseract-ocr-chi-sim  # For Chinese Simplified
+# Language packs (vie, chi-sim, jpn, etc.) installed automatically by Sage
 ```
 
 **Windows:**
 Download and install from: https://github.com/UB-Mannheim/tesseract/wiki
 
-### Install Project Sage
+> 💡 **New**: Sage automatically installs Vietnamese, Chinese, Japanese, and Korean language packs during setup!
+
+### 🔒 Recommended: Virtual Environment Installation
+
+**Using a virtual environment prevents conflicts with your system Python and other projects.**
+
+#### **Option 1: Automated Installation Script (Easiest)**
+
+**macOS/Linux:**
+```bash
+# Clone and install in one go
+git clone https://github.com/yourusername/project-sage.git
+cd project-sage
+./install.sh
+```
+
+**Windows:**
+```cmd
+# Clone and install in one go
+git clone https://github.com/yourusername/project-sage.git
+cd project-sage
+install.bat
+```
+
+> ✨ **The installation script automatically**:
+> - Checks Python version (3.9+ required)
+> - Installs Tesseract OCR if missing (macOS/Linux)
+> - Creates and activates virtual environment
+> - Installs all dependencies
+> - Verifies installation
+
+#### **Option 2: Manual Virtual Environment Setup**
+
+**Using `venv` (Built-in):**
+
+**macOS/Linux:**
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/project-sage.git
+cd project-sage
+
+# Create virtual environment
+python -m venv sage-env
+
+# Activate virtual environment
+source sage-env/bin/activate
+
+# Install Project Sage
+pip install --upgrade pip
+pip install -e .
+
+# Verify installation
+sage --version
+```
+
+**Windows:**
+```cmd
+# Clone the repository
+git clone https://github.com/yourusername/project-sage.git
+cd project-sage
+
+# Create virtual environment
+python -m venv sage-env
+
+# Activate virtual environment
+sage-env\Scripts\activate
+
+# Install Project Sage
+pip install --upgrade pip
+pip install -e .
+
+# Verify installation
+sage --version
+```
+
+#### **Option 3: Using `conda` (If you have Anaconda/Miniconda)**
 
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/project-sage.git
 cd project-sage
 
-# Install the package
+# Create conda environment
+conda create -n sage python=3.11 -y
+conda activate sage
+
+# Install Project Sage
 pip install -e .
 
-# Or install dependencies directly
-pip install -r requirements.txt
+# Verify installation
+sage --version
 ```
+
+#### **💡 Virtual Environment Benefits**
+
+✅ **Isolated Dependencies**: No conflicts with other Python projects  
+✅ **Easy Cleanup**: Delete the environment folder to completely remove  
+✅ **Multiple Versions**: Run different versions for different projects  
+✅ **System Protection**: Your system Python stays clean  
+
+#### **🔄 Daily Usage After Installation**
+
+```bash
+# Navigate to your project
+cd ~/my-vietnamese-project
+
+# Activate environment (if not already active)
+source path/to/project-sage/sage-env/bin/activate  # macOS/Linux
+# OR
+path\to\project-sage\sage-env\Scripts\activate     # Windows
+
+# Use Sage normally
+sage setup
+sage update
+sage chat
+
+# Deactivate when done
+deactivate
+```
+
+### ⚡ Alternative: Direct Installation (Not Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/project-sage.git
+cd project-sage
+
+# Install directly to system Python (may cause conflicts)
+pip install -e .
+```
+
+> ⚠️ **Warning**: Direct installation may conflict with other Python packages. Virtual environment is strongly recommended.
+
+> ⚡ **Pro Tip**: For Vietnamese documents, Sage will automatically configure optimal settings during setup!
 
 ## Quick Start
 
@@ -70,11 +200,12 @@ pip install -r requirements.txt
    ```bash
    sage setup
    ```
-   This will open a GUI window where you can:
-   - Confirm your project directory
-   - Enter your LLM API key
-   - Select your LLM provider and model
-   - Choose the primary language of your documents
+   This opens an enhanced GUI setup wizard with:
+   - **Model tooltips** with performance characteristics
+   - **Interactive model guide** with recommendations
+   - **Automatic OCR language installation** (Vietnamese, Chinese, etc.)
+   - **Smart provider recommendations** based on your content
+   - **Embedding impact explanations** for informed choices
 
 3. **Index your documents:**
    ```bash
@@ -101,13 +232,23 @@ Scan and index project documents. Use `--force` to re-index all files.
 ### `sage ask "<question>"`
 Ask a single question about your project documents.
 
-### `sage chat`
+### `sage chat` - Interactive AI Assistant
 Start an interactive chat session with your documents - like Claude Code! Features:
-- Continuous conversation with your project knowledge base
-- Chat commands: `/help`, `/status`, `/history`, `/clear`, `/sources`
-- Conversation history and context
-- Save chat sessions to `.sage/chats/`
-- Type `exit` to quit
+- **Dynamic model switching**: `/switch google gemini-2.0-flash` 
+- **Model information**: `/model` shows current model, recommendations, tips
+- **Smart recommendations**: Task-specific model suggestions
+- **Chat commands**: `/help`, `/status`, `/history`, `/clear`, `/sources`
+- **Conversation history** with auto-save to `.sage/chats/`
+- **Embedding awareness**: Shows which embedding model is used
+- **Vietnamese optimization**: Best performance with Google models
+
+### `sage models` - Model Information Hub
+Comprehensive model information and switching guide:
+- **Detailed recommendations** by use case (speed, quality, privacy, coding)
+- **Embedding model comparison** with privacy implications
+- **Performance characteristics** and resource requirements
+- **Availability status** for each configured provider
+- **Vietnamese content optimization** guidance
 
 ### `sage status`
 Display the current status of your knowledge base.
@@ -134,58 +275,119 @@ The `.sage/` directory is automatically added to your `.gitignore` to prevent ac
 - **TXT** - Plain text files
 - **MD** - Markdown files
 
-## API Keys
+## 🔑 API Keys & Setup
 
-### API Keys (Cloud Providers)
+### Cloud Providers (Recommended for Vietnamese)
 
-For cloud providers, you'll need an API key:
+**🏆 Google Gemini** (Best for Vietnamese content):
+- Get your key: https://makersuite.google.com/app/apikey
+- ✅ Best multilingual embeddings (Vietnamese, Chinese, Japanese)
+- ✅ Superior semantic understanding
+- ✅ Optimal for scanned Vietnamese PDFs
 
-- **Google Gemini**: Get your key at https://makersuite.google.com/app/apikey
-- **Anthropic Claude**: Get your key at https://console.anthropic.com/
-- **OpenAI GPT**: Get your key at https://platform.openai.com/api-keys
+**Anthropic Claude** (Best reasoning):
+- Get your key: https://console.anthropic.com/
+- ⚠️ Uses OpenAI embeddings (no native embeddings)
+- ✅ Excellent for complex analysis and writing
 
-### Local AI with Ollama (No API Key Needed!)
+**OpenAI GPT** (Latest reasoning models):
+- Get your key: https://platform.openai.com/api-keys
+- ✅ o1-preview for advanced reasoning
+- ✅ GPT-4o for multimodal tasks
 
-For completely local AI without sending data to cloud providers:
+### 🔒 Local AI with Ollama (Complete Privacy)
+
+For 100% local processing with no cloud API calls:
 
 1. **Install Ollama**: https://ollama.ai/
-2. **Pull models**: `ollama pull llama3.1:8b` or `ollama pull mixtral:8x7b`
+2. **Pull models**: 
+   ```bash
+   ollama pull llama3.1:8b      # Fast, 8GB RAM
+   ollama pull mixtral:8x7b     # Coding, 32GB RAM
+   ollama pull codellama:13b    # Programming, 16GB RAM
+   ```
 3. **Start Ollama**: `ollama serve`
 4. **Use in Sage**: Select "Ollama (Local)" in setup
 
-**Popular Ollama Models:**
-- `llama3.1:8b` - Fast, good quality (4GB RAM)
-- `llama3.1:70b` - High quality (40GB RAM)  
-- `mixtral:8x7b` - Great for coding (26GB RAM)
-- `codellama:7b` - Specialized for code (3.8GB RAM)
-- `qwen2.5:14b` - Excellent reasoning (8GB RAM)
+> 💡 **For Vietnamese Content**: Index with Google (best embeddings), then switch to any chat model!
 
 ## Example Usage
 
-```bash
-# Initialize in a project folder
-cd ~/projects/renewable-energy-project
-sage setup
+### 🔄 **Complete Workflow with Virtual Environment**
 
-# Index all documents
+```bash
+# 1. First-time setup
+cd ~/projects
+git clone https://github.com/yourusername/project-sage.git
+cd project-sage
+python -m venv sage-env
+source sage-env/bin/activate  # macOS/Linux
+# OR sage-env\Scripts\activate  # Windows
+pip install -e .
+
+# 2. Navigate to your Vietnamese project
+cd ~/projects/vietnamese-renewable-project
+
+# 3. Initialize Sage for this project (virtual env still active)
+sage setup  # Choose Google Gemini for Vietnamese content
+
+# 4. Index all documents (including Vietnamese scanned PDFs)
 sage update
 
-# Ask questions in English (even about Vietnamese documents)
+# 5. Ask questions in English (even about Vietnamese documents)
 sage ask "What are the key milestones in the project timeline?"
 sage ask "What is the total investment amount mentioned in the contracts?"
 sage ask "List all the technical specifications for the solar panels"
 
-# Check status
+# 6. Check status
 sage status
 
-# Force re-index after adding new documents
-sage update --force
-
-# Launch the enhanced GUI
+# 7. Launch the enhanced GUI
 sage gui
 
-# Start interactive chat session
+# 8. Start interactive chat session with model switching
 sage chat
+# > /switch google gemini-1.5-pro     # For complex Vietnamese analysis
+# > /switch anthropic claude-4-latest  # For reasoning tasks
+# > /switch ollama llama3.1:8b         # For privacy
+
+# 9. When done, deactivate virtual environment
+deactivate
+```
+
+### 🔄 **Daily Usage (After Initial Setup)**
+
+```bash
+# Activate your Sage environment
+cd path/to/project-sage
+source sage-env/bin/activate  # macOS/Linux
+
+# Navigate to any project with documents
+cd ~/work/current-vietnamese-project
+
+# Use Sage normally
+sage setup     # One-time per project
+sage update    # When you add new documents
+sage chat      # Interactive analysis
+
+# Deactivate when done
+deactivate
+```
+
+### 🎯 **Project-Specific Usage**
+
+```bash
+# Each project gets its own .sage directory
+cd ~/project-a
+sage setup    # Creates ~/project-a/.sage/
+sage update
+
+cd ~/project-b  
+sage setup    # Creates ~/project-b/.sage/
+sage update
+
+# Projects are completely independent
+# Same Sage installation, different knowledge bases
 ```
 
 ## Interactive Chat Example
@@ -195,53 +397,70 @@ $ sage chat
 ╭─────────────── Chat Session Started ───────────────╮
 │ 🤖 Sage Interactive Chat                           │
 │                                                     │
-│ Project: renewable-energy-project                   │
-│ Documents: 24 chunks indexed                        │
-│ LLM: Google gemini-1.5-pro                         │
+│ Project: vietnamese-renewable-project               │
+│ Documents: 156 chunks indexed                       │
+│ LLM: Google gemini-1.5-pro (Vietnamese optimized)  │
+│ Configured: Google, Claude, GPT, Ollama            │
 │                                                     │
 │ Type your questions or 'exit' to quit              │
-│ Commands: /help, /status, /clear, /history          │
+│ Commands: /help, /model, /switch, /history          │
 ╰─────────────────────────────────────────────────────╯
 
 🧑 You: What is the total project budget?
 
 ╭─────────────────── 🤖 Sage ───────────────────────╮
 │ The total project budget is $45 million USD as    │
-│ stated in the project overview document.          │
+│ outlined in the Vietnamese contract documents.     │
+│ This includes turbine costs and installation.      │
 ╰────────────────────────────────────────────────────╯
-📚 project_overview.md, financial_summary.xlsx
+📚 hop_dong_tuabin.pdf, tai_lieu_du_an.docx
 
-🧑 You: How is this budget allocated?
+🧑 You: /switch anthropic claude-4-latest
+✓ Switched to Anthropic claude-4-latest
+🔮 Future Claude 4 (when available) | Quality: Expected Excellent
+
+🧑 You: Can you analyze the risk factors?
 
 ╭─────────────────── 🤖 Sage ───────────────────────╮
-│ The budget is allocated as follows:               │
-│ • Equipment: $28M (62%)                           │
-│ • Construction: $12M (27%)                        │
-│ • Development: $3M (7%)                           │
-│ • Contingency: $2M (4%)                          │
+│ Based on the Vietnamese documents, key risks:      │
+│ • Weather delays (monsoon season)                  │
+│ • Supply chain disruptions                         │
+│ • Regulatory approval timelines                    │
+│ • Currency fluctuation (VND/USD)                   │
 ╰────────────────────────────────────────────────────╯
-📚 budget_breakdown.pdf, cost_analysis.xlsx
+📚 danh_gia_rui_ro.pdf, ke_hoach_du_an.xlsx
 
-🧑 You: /history
+🧑 You: /model
 
-Conversation History (2 questions):
+╭─────────────── Model Information ──────────────────╮
+│ Current Model:                                      │
+│ 🤖 Anthropic claude-4-latest                       │
+│ 🔮 Future Claude 4 | Quality: Expected Excellent   │
+│                                                     │
+│ Embeddings:                                         │
+│ ⚠️ Uses OpenAI embeddings - Claude has no native   │
+│                                                     │
+│ Switching Tips:                                     │
+│ • Index with Google (best Vietnamese embeddings)   │
+│ • Use fast models for quick questions               │
+│ • Switch to quality models for complex analysis     │
+│ • Use local models for complete privacy             │
+╰─────────────────────────────────────────────────────╯
 
-1. Q: What is the total project budget?...
-   A: The total project budget is $45 million USD...
-
-2. Q: How is this budget allocated?...
-   A: The budget is allocated as follows: • Equipment: $28M...
+🧑 You: /switch ollama llama3.1:8b
+✓ Switched to Ollama llama3.1:8b
+🦙 Fast local model | RAM: 8GB | Privacy: 100%
 
 🧑 You: exit
 
-Chat session ended. Asked 2 questions.
+Chat session ended. Asked 4 questions.
 Save conversation history? [y/N]: y
-Conversation saved to: .sage/chats/chat_20250810_142315.json
+Conversation saved to: .sage/chats/vietnamese_project_20250810.json
 ```
 
-## Enhanced GUI Features
+## 🖥️ Enhanced GUI Features
 
-The `sage gui` command launches a comprehensive interface with multiple tabs:
+The `sage gui` command launches a comprehensive interface with model tooltips:
 
 ### Overview Tab
 - Real-time project statistics
@@ -250,16 +469,15 @@ The `sage gui` command launches a comprehensive interface with multiple tabs:
 - Quick action buttons for indexing
 
 ### Files Tab
-- Complete list of all indexed documents
-- **Double-click files to open them** in default application
-- **Right-click context menu** with options:
-  - Open file
-  - Show in Finder/Explorer
-  - Copy file path
-  - Reindex single file
-- Search and filter capabilities
-- File details including chunk count and modification dates
-- File type indicators and status
+- **Complete file browser** with all indexed documents
+- **Double-click to open** files in default application
+- **Right-click context menu**:
+  - Open file / Show in Finder
+  - Copy file path / Reindex single file
+- **Vietnamese file support** with proper encoding
+- **Search and filter** by name, type, or content
+- **File statistics** including chunk count and processing status
+- **Drag & drop support** for adding new documents
 
 ### Vectors Tab
 - Vector database statistics
@@ -268,28 +486,43 @@ The `sage gui` command launches a comprehensive interface with multiple tabs:
 - Database storage details
 
 ### Query Tab
-- Interactive question interface
-- Real-time answer generation
-- Source document references
-- Response history
+- **Interactive AI chat** with model switching
+- **Real-time answers** from your Vietnamese documents  
+- **Model selection dropdown** with performance tooltips
+- **Source highlighting** showing relevant document sections
+- **Response history** with conversation context
+- **Export capabilities** for important answers
 
 ### Config Tab
-- Current configuration display
-- LLM provider and model settings
-- Chunk size and overlap parameters
+- **Current model display** with performance characteristics
+- **Provider comparison** showing embedding models used
+- **Vietnamese optimization** status and recommendations
+- **API key management** with security indicators
+- **OCR language settings** with auto-install status
+- **Performance tuning** for chunk size and overlap
 
-## Model Selection Guide
+## 🎯 Model Selection Guide
 
-### 🔥 **Latest & Best Models**
+### 🏆 **Best Models by Use Case**
 
-| Model | Provider | Best For | Speed | Quality |
-|-------|----------|----------|-------|---------|
-| **claude-4-latest** | Anthropic | Complex analysis, writing | Medium | ⭐⭐⭐⭐⭐ |
-| **gpt-5-preview** | OpenAI | General intelligence | Medium | ⭐⭐⭐⭐⭐ |
-| **o1-preview** | OpenAI | Reasoning, math, code | Slow | ⭐⭐⭐⭐⭐ |
-| **claude-3.5-sonnet** | Anthropic | Balanced performance | Fast | ⭐⭐⭐⭐ |
-| **gpt-4o** | OpenAI | Multimodal, fast | Fast | ⭐⭐⭐⭐ |
-| **gemini-2.0-flash** | Google | Speed + quality | Very Fast | ⭐⭐⭐⭐ |
+| Use Case | Best Choice | Why | Embedding Impact |
+|----------|-------------|-----|------------------|
+| **Vietnamese PDFs** | 🥇 **Google Gemini Pro** | Best Vietnamese embeddings | ✅ Optimal retrieval |
+| **Speed** | ⚡ **Gemini 2.0 Flash** | Fastest responses | ✅ Quick indexing |
+| **Quality** | 🧠 **Claude 4 Latest** | Best reasoning | ⚠️ Uses OpenAI embeddings |
+| **Privacy** | 🔒 **Ollama Llama 3.1** | 100% local | ✅ Local embeddings |
+| **Coding** | 💻 **o1-preview** | Advanced reasoning | ⚖️ Good embeddings |
+| **Budget** | 💰 **Gemini Flash** | Low cost, good quality | ✅ Excellent embeddings |
+
+### 🌟 **Latest & Greatest Models**
+
+| Model | Provider | Best For | Speed | Vietnamese Support |
+|-------|----------|----------|-------|---------------------|
+| **claude-4-latest** | Anthropic | Complex analysis | Medium | ⚖️ Via OpenAI embeddings |
+| **gpt-5-preview** | OpenAI | General intelligence | Medium | ⚖️ Good |
+| **o1-preview** | OpenAI | Reasoning, math | Slow | ⚖️ Good |
+| **gemini-2.0-flash** | Google | Speed + quality | Very Fast | ✅ **Excellent** |
+| **gemini-1.5-pro** | Google | Vietnamese content | Medium | ✅ **Best** |
 
 ### 🦙 **Local Models (Ollama)**
 
@@ -302,19 +535,31 @@ The `sage gui` command launches a comprehensive interface with multiple tabs:
 | **qwen2.5:14b** | 8.2GB | 16GB | Math, reasoning |
 | **gemma2:9b** | 5.4GB | 8GB | Efficient, Google-made |
 
-### 💡 **Recommendations**
+### 💡 **Smart Recommendations**
 
-- **For Privacy**: Use Ollama models (everything stays local)
-- **For Latest Features**: Claude 4 or GPT-5 preview models  
-- **For Speed**: Gemini 2.0 Flash or Claude 3.5 Sonnet
-- **For Coding**: o1-preview, Mixtral, or CodeLlama
-- **For Budget**: Ollama local models (free after setup)
+#### 🇻🇳 **For Vietnamese Content**
+- **🏆 Best Choice**: Google Gemini (any model) for superior Vietnamese embeddings
+- **Workflow**: Index with Google → Chat with any model you prefer
+- **OCR**: Automatic Vietnamese language pack installation
+
+#### 🎯 **By Priority**
+- **Privacy First**: Ollama models (100% local, no cloud calls)
+- **Quality First**: Claude 4 → GPT-5 → Gemini Pro
+- **Speed First**: Gemini 2.0 Flash → Claude 3.5 Sonnet → GPT-4o Mini
+- **Cost First**: Ollama (free after setup) → Gemini Flash → GPT-4o Mini
+- **Coding**: o1-preview → CodeLlama → Claude 3.5 Sonnet
+
+#### 🔄 **Dynamic Switching**
+- **Index once** with optimal embedding model (Google for Vietnamese)
+- **Switch freely** between chat models during conversation
+- **Task-specific**: Fast model for quick questions, quality model for analysis
 
 ## Troubleshooting
 
 ### OCR Not Working
 - Ensure Tesseract is installed: `tesseract --version`
-- Install language packs for your documents (e.g., `tesseract-ocr-vie` for Vietnamese)
+- Language packs are now auto-installed by Sage setup
+- For manual installation: `brew install tesseract-lang` (macOS)
 
 ### API Errors
 - Verify your API key is correct
@@ -325,6 +570,52 @@ The `sage gui` command launches a comprehensive interface with multiple tabs:
 - For large projects, consider adjusting chunk_size in the configuration
 - Process documents in batches if needed
 
+### Vietnamese Text Issues
+- Use Google Gemini for best Vietnamese support
+- Ensure Vietnamese OCR language pack is installed (auto-installed by setup)
+- Check document encoding for proper Vietnamese characters
+
+### Virtual Environment Issues
+
+#### **"Command not found: sage"**
+```bash
+# Make sure virtual environment is activated
+source sage-env/bin/activate  # macOS/Linux
+sage-env\Scripts\activate     # Windows
+
+# Verify Sage is installed
+pip list | grep sage
+```
+
+#### **Permission Errors**
+```bash
+# Don't use sudo with virtual environments
+# If you get permission errors, recreate the environment:
+rm -rf sage-env
+python -m venv sage-env
+source sage-env/bin/activate
+pip install -e .
+```
+
+#### **Path Issues on Windows**
+```cmd
+# Use full path if activation doesn't work
+C:\path\to\project-sage\sage-env\Scripts\activate
+
+# Or use PowerShell execution policy
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### Package Conflicts
+- **Always use virtual environments** to avoid package conflicts
+- If you have conflicts, create a fresh environment:
+  ```bash
+  rm -rf sage-env
+  python -m venv sage-env
+  source sage-env/bin/activate
+  pip install -e .
+  ```
+
 ## License
 
 MIT License - see LICENSE file for details.
@@ -332,3 +623,7 @@ MIT License - see LICENSE file for details.
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+*Using Agent OS for structured AI-assisted development. Learn more at [buildermethods.com/agent-os](https://buildermethods.com/agent-os)*

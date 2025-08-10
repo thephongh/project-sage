@@ -11,14 +11,32 @@ class SageConfig(BaseModel):
     """Configuration model for Sage project settings."""
     
     project_path: Path = Field(description="Root path of the project")
-    api_key: SecretStr = Field(description="LLM API key")
-    llm_provider: str = Field(default="google", description="LLM provider (google/anthropic/openai/ollama)")
-    llm_model: str = Field(default="gemini-1.5-flash", description="LLM model name")
+    
+    # Primary configuration (used for indexing/embeddings)
+    api_key: SecretStr = Field(description="Primary API key")
+    llm_provider: str = Field(default="google", description="Primary LLM provider (google/anthropic/openai/ollama)")
+    llm_model: str = Field(default="gemini-1.5-flash", description="Primary LLM model name")
+    
+    # Additional API keys for multi-provider support
+    google_api_key: Optional[SecretStr] = Field(default=None, description="Google Gemini API key")
+    anthropic_api_key: Optional[SecretStr] = Field(default=None, description="Anthropic Claude API key") 
+    openai_api_key: Optional[SecretStr] = Field(default=None, description="OpenAI GPT API key")
+    
+    # Document and embedding settings
     document_language: str = Field(default="en", description="Primary language of documents")
     embedding_model: str = Field(default="text-embedding-004", description="Embedding model name")
+    embedding_provider: str = Field(default="auto", description="Embedding provider (auto/google/openai/ollama/huggingface)")
+    
+    # Processing settings
     chunk_size: int = Field(default=1000, description="Text chunk size for processing")
     chunk_overlap: int = Field(default=200, description="Overlap between chunks")
+    
+    # Ollama settings
     ollama_url: Optional[str] = Field(default=None, description="Ollama base URL for local models")
+    
+    # Runtime settings (not saved to config)
+    current_chat_provider: Optional[str] = Field(default=None, exclude=True, description="Current chat provider override")
+    current_chat_model: Optional[str] = Field(default=None, exclude=True, description="Current chat model override")
     
     class Config:
         json_encoders = {
