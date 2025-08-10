@@ -9,6 +9,18 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 
+try:
+    from langchain_ollama import OllamaEmbeddings
+    HAS_OLLAMA = True
+except ImportError:
+    HAS_OLLAMA = False
+
+try:
+    from langchain_community.embeddings import HuggingFaceEmbeddings
+    HAS_HUGGINGFACE = True
+except ImportError:
+    HAS_HUGGINGFACE = False
+
 
 class VectorStore:
     """Manages the vector database for document storage and retrieval."""
@@ -39,6 +51,33 @@ class VectorStore:
                 model="text-embedding-3-small",
                 openai_api_key=api_key
             )
+        elif self.config.llm_provider == "ollama":
+            # For Ollama, try to use Ollama embeddings first, fall back to local HuggingFace
+            base_url = self.config.ollama_url or "http://localhost:11434"
+            
+            if HAS_OLLAMA:
+                try:
+                    # Try to use Ollama's embedding model (e.g., nomic-embed-text)
+                    return OllamaEmbeddings(
+                        model="nomic-embed-text",  # Popular embedding model on Ollama
+                        base_url=base_url
+                    )
+                except Exception:
+                    # Fall back to local HuggingFace embeddings
+                    pass
+                    
+            # Fallback to local HuggingFace embeddings for Ollama
+            if HAS_HUGGINGFACE:
+                return HuggingFaceEmbeddings(
+                    model_name="sentence-transformers/all-MiniLM-L6-v2",
+                    model_kwargs={'device': 'cpu'}
+                )
+            else:
+                raise ValueError(
+                    "Ollama embeddings require either:\n"
+                    "1. Ollama with nomic-embed-text model installed, or\n"
+                    "2. HuggingFace embeddings. Install with: pip install sentence-transformers"
+                )
         else:
             raise ValueError(f"Unsupported provider: {self.config.llm_provider}")
             

@@ -8,6 +8,12 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.chains import LLMChain
 
+try:
+    from langchain_ollama import ChatOllama
+    HAS_OLLAMA = True
+except ImportError:
+    HAS_OLLAMA = False
+
 
 class LLMClient:
     """Manages LLM interactions for question answering."""
@@ -60,6 +66,24 @@ Please provide a comprehensive answer in English:"""
                 temperature=0.3,
                 max_tokens=2048
             )
+        elif self.config.llm_provider == "ollama":
+            if not HAS_OLLAMA:
+                raise ValueError("Ollama support not installed. Run: pip install langchain-ollama")
+                
+            base_url = self.config.ollama_url or "http://localhost:11434"
+            
+            # Handle API key for secured Ollama instances (optional)
+            ollama_kwargs = {
+                "model": self.config.llm_model,
+                "base_url": base_url,
+                "temperature": 0.3,
+            }
+            
+            # Only add API key if provided and not the default
+            if api_key and api_key != "not-required":
+                ollama_kwargs["api_key"] = api_key
+                
+            return ChatOllama(**ollama_kwargs)
         else:
             raise ValueError(f"Unsupported provider: {self.config.llm_provider}")
             

@@ -12,12 +12,13 @@ class SageConfig(BaseModel):
     
     project_path: Path = Field(description="Root path of the project")
     api_key: SecretStr = Field(description="LLM API key")
-    llm_provider: str = Field(default="google", description="LLM provider (google/anthropic/openai)")
+    llm_provider: str = Field(default="google", description="LLM provider (google/anthropic/openai/ollama)")
     llm_model: str = Field(default="gemini-1.5-flash", description="LLM model name")
     document_language: str = Field(default="en", description="Primary language of documents")
     embedding_model: str = Field(default="text-embedding-004", description="Embedding model name")
     chunk_size: int = Field(default=1000, description="Text chunk size for processing")
     chunk_overlap: int = Field(default=200, description="Overlap between chunks")
+    ollama_url: Optional[str] = Field(default=None, description="Ollama base URL for local models")
     
     class Config:
         json_encoders = {

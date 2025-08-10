@@ -15,7 +15,9 @@ An intelligent AI assistant for complex project management that creates a self-c
   - Real-time project statistics
   - Configuration management
 - **Simple Setup**: Easy initialization with a graphical setup wizard
-- **Multiple LLM Providers**: Support for Google Gemini, Anthropic Claude, and OpenAI GPT
+- **Multiple LLM Providers**: Support for Google Gemini, Anthropic Claude, OpenAI GPT, and **Ollama (Local)**
+- **Latest Models**: Claude 4, GPT-5, GPT-4o, o1-preview, Claude 3.5 Sonnet, and more
+- **Local AI Support**: Run models locally with Ollama - no API keys needed!
 
 ## Installation
 
@@ -134,11 +136,29 @@ The `.sage/` directory is automatically added to your `.gitignore` to prevent ac
 
 ## API Keys
 
-You'll need an API key from one of the supported providers:
+### API Keys (Cloud Providers)
+
+For cloud providers, you'll need an API key:
 
 - **Google Gemini**: Get your key at https://makersuite.google.com/app/apikey
 - **Anthropic Claude**: Get your key at https://console.anthropic.com/
 - **OpenAI GPT**: Get your key at https://platform.openai.com/api-keys
+
+### Local AI with Ollama (No API Key Needed!)
+
+For completely local AI without sending data to cloud providers:
+
+1. **Install Ollama**: https://ollama.ai/
+2. **Pull models**: `ollama pull llama3.1:8b` or `ollama pull mixtral:8x7b`
+3. **Start Ollama**: `ollama serve`
+4. **Use in Sage**: Select "Ollama (Local)" in setup
+
+**Popular Ollama Models:**
+- `llama3.1:8b` - Fast, good quality (4GB RAM)
+- `llama3.1:70b` - High quality (40GB RAM)  
+- `mixtral:8x7b` - Great for coding (26GB RAM)
+- `codellama:7b` - Specialized for code (3.8GB RAM)
+- `qwen2.5:14b` - Excellent reasoning (8GB RAM)
 
 ## Example Usage
 
@@ -257,6 +277,38 @@ The `sage gui` command launches a comprehensive interface with multiple tabs:
 - Current configuration display
 - LLM provider and model settings
 - Chunk size and overlap parameters
+
+## Model Selection Guide
+
+### 🔥 **Latest & Best Models**
+
+| Model | Provider | Best For | Speed | Quality |
+|-------|----------|----------|-------|---------|
+| **claude-4-latest** | Anthropic | Complex analysis, writing | Medium | ⭐⭐⭐⭐⭐ |
+| **gpt-5-preview** | OpenAI | General intelligence | Medium | ⭐⭐⭐⭐⭐ |
+| **o1-preview** | OpenAI | Reasoning, math, code | Slow | ⭐⭐⭐⭐⭐ |
+| **claude-3.5-sonnet** | Anthropic | Balanced performance | Fast | ⭐⭐⭐⭐ |
+| **gpt-4o** | OpenAI | Multimodal, fast | Fast | ⭐⭐⭐⭐ |
+| **gemini-2.0-flash** | Google | Speed + quality | Very Fast | ⭐⭐⭐⭐ |
+
+### 🦙 **Local Models (Ollama)**
+
+| Model | Size | RAM Needed | Best For | 
+|-------|------|------------|----------|
+| **llama3.1:8b** | 4.7GB | 8GB | General use, fast responses |
+| **llama3.1:70b** | 40GB | 64GB | Highest quality local |
+| **mixtral:8x7b** | 26GB | 32GB | Coding, technical content |
+| **codellama:7b** | 3.8GB | 8GB | Code generation/analysis |
+| **qwen2.5:14b** | 8.2GB | 16GB | Math, reasoning |
+| **gemma2:9b** | 5.4GB | 8GB | Efficient, Google-made |
+
+### 💡 **Recommendations**
+
+- **For Privacy**: Use Ollama models (everything stays local)
+- **For Latest Features**: Claude 4 or GPT-5 preview models  
+- **For Speed**: Gemini 2.0 Flash or Claude 3.5 Sonnet
+- **For Coding**: o1-preview, Mixtral, or CodeLlama
+- **For Budget**: Ollama local models (free after setup)
 
 ## Troubleshooting
 

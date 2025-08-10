@@ -26,14 +26,66 @@ class SetupWindow:
     
     PROVIDERS = {
         "Google Gemini": "google",
-        "Anthropic Claude": "anthropic",
-        "OpenAI GPT": "openai"
+        "Anthropic Claude": "anthropic", 
+        "OpenAI GPT": "openai",
+        "Ollama (Local)": "ollama"
     }
     
     MODELS = {
-        "google": ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-2.0-flash-exp"],
-        "anthropic": ["claude-3-haiku-20240307", "claude-3-sonnet-20240229", "claude-3-opus-20240229"],
-        "openai": ["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo-preview"]
+        "google": [
+            "gemini-1.5-flash", 
+            "gemini-1.5-pro", 
+            "gemini-2.0-flash-exp",
+            "gemini-exp-1206"
+        ],
+        "anthropic": [
+            "claude-3-haiku-20240307",
+            "claude-3-sonnet-20240229", 
+            "claude-3-opus-20240229",
+            "claude-3-5-sonnet-20241022",
+            "claude-3-5-haiku-20241022",
+            "claude-4-latest",  # Future Claude 4
+            "claude-4-preview"  # Future Claude 4 preview
+        ],
+        "openai": [
+            "gpt-3.5-turbo",
+            "gpt-4",
+            "gpt-4-turbo",
+            "gpt-4-turbo-preview", 
+            "gpt-4o",
+            "gpt-4o-mini",
+            "gpt-5-preview",  # Future GPT-5
+            "gpt-5-turbo",    # Future GPT-5 turbo
+            "o1-preview",
+            "o1-mini"
+        ],
+        "ollama": [
+            "llama3.1:8b",
+            "llama3.1:70b", 
+            "llama3.1:405b",
+            "llama3.2:1b",
+            "llama3.2:3b",
+            "mixtral:8x7b",
+            "mixtral:8x22b",
+            "codellama:7b",
+            "codellama:13b",
+            "codellama:34b",
+            "deepseek-coder:6.7b",
+            "deepseek-coder:33b",
+            "qwen2.5:7b",
+            "qwen2.5:14b",
+            "qwen2.5:32b",
+            "phi3:mini",
+            "phi3:medium",
+            "gemma2:2b",
+            "gemma2:9b",
+            "gemma2:27b",
+            "mistral:7b",
+            "neural-chat:7b",
+            "orca-mini:3b",
+            "vicuna:7b",
+            "custom-model"  # Allow custom model names
+        ]
     }
     
     def __init__(self, project_path: Path):
@@ -102,16 +154,30 @@ class SetupWindow:
         )
         self.model_menu.pack(padx=30, pady=5, fill="x")
         
-        # API key input
-        api_label = ctk.CTkLabel(self.root, text="API Key:")
-        api_label.pack(anchor="w", padx=30, pady=(10, 0))
+        # API key input (conditional)
+        self.api_label = ctk.CTkLabel(self.root, text="API Key:")
+        self.api_label.pack(anchor="w", padx=30, pady=(10, 0))
         
         self.api_entry = ctk.CTkEntry(
             self.root, 
-            placeholder_text="Paste your API key here",
+            placeholder_text="Paste your API key here (not needed for Ollama)",
             show="*"
         )
         self.api_entry.pack(padx=30, pady=5, fill="x")
+        
+        # Ollama URL input (initially hidden)
+        self.ollama_label = ctk.CTkLabel(self.root, text="Ollama Base URL:")
+        self.ollama_entry = ctk.CTkEntry(
+            self.root,
+            placeholder_text="http://localhost:11434 (default)"
+        )
+        
+        # Custom model input (initially hidden)
+        self.custom_model_label = ctk.CTkLabel(self.root, text="Custom Model Name:")
+        self.custom_model_entry = ctk.CTkEntry(
+            self.root,
+            placeholder_text="Enter custom model name (e.g., my-model:latest)"
+        )
         
         # Language selection
         lang_label = ctk.CTkLabel(self.root, text="Document Language (for OCR):")
@@ -163,27 +229,94 @@ class SetupWindow:
         self.model_menu.configure(values=models)
         self.model_var.set(models[0])
         
+        # Show/hide Ollama-specific fields
+        if provider_key == "ollama":
+            # Show Ollama fields
+            self.ollama_label.pack(anchor="w", padx=30, pady=(10, 0))
+            self.ollama_entry.pack(padx=30, pady=5, fill="x")
+            
+            # Update API key field for Ollama
+            self.api_label.configure(text="API Key (optional for Ollama):")
+            self.api_entry.configure(placeholder_text="Optional: API key for secured Ollama instances")
+            self.api_entry.configure(show="")  # Don't hide text for optional field
+            
+            # Check if custom model is selected
+            if self.model_var.get() == "custom-model":
+                self.custom_model_label.pack(anchor="w", padx=30, pady=(10, 0))
+                self.custom_model_entry.pack(padx=30, pady=5, fill="x")
+        else:
+            # Hide Ollama fields
+            self.ollama_label.pack_forget()
+            self.ollama_entry.pack_forget()
+            self.custom_model_label.pack_forget()
+            self.custom_model_entry.pack_forget()
+            
+            # Reset API key field for cloud providers
+            self.api_label.configure(text="API Key:")
+            self.api_entry.configure(placeholder_text="Paste your API key here")
+            self.api_entry.configure(show="*")  # Hide API key text
+            
+        # Handle custom model selection
+        if self.model_var.get() == "custom-model" and provider_key == "ollama":
+            self.custom_model_label.pack(anchor="w", padx=30, pady=(10, 0))
+            self.custom_model_entry.pack(padx=30, pady=5, fill="x")
+        
+        # Bind model selection change for custom model handling
+        self.model_menu.configure(command=self._on_model_change)
+        
+    def _on_model_change(self, choice):
+        """Handle model selection change."""
+        provider_key = self.PROVIDERS[self.provider_var.get()]
+        
+        if provider_key == "ollama" and choice == "custom-model":
+            self.custom_model_label.pack(anchor="w", padx=30, pady=(10, 0))
+            self.custom_model_entry.pack(padx=30, pady=5, fill="x")
+        else:
+            self.custom_model_label.pack_forget()
+            self.custom_model_entry.pack_forget()
+        
     def _on_initialize(self):
         """Handle initialization button click."""
+        provider_key = self.PROVIDERS[self.provider_var.get()]
         api_key = self.api_entry.get().strip()
         
-        if not api_key:
+        # Validate inputs based on provider
+        if provider_key != "ollama" and not api_key:
             self.status_label.configure(
                 text="Please enter an API key",
                 text_color="red"
             )
             return
             
+        # Get model name (handle custom models)
+        selected_model = self.model_var.get()
+        if selected_model == "custom-model" and provider_key == "ollama":
+            custom_model = self.custom_model_entry.get().strip()
+            if not custom_model:
+                self.status_label.configure(
+                    text="Please enter a custom model name",
+                    text_color="red"
+                )
+                return
+            selected_model = custom_model
+            
         # Create configuration
-        provider_key = self.PROVIDERS[self.provider_var.get()]
         language_code = self.LANGUAGES[self.lang_var.get()]
+        
+        # Get Ollama URL if applicable
+        ollama_url = None
+        if provider_key == "ollama":
+            ollama_url = self.ollama_entry.get().strip()
+            if not ollama_url:
+                ollama_url = "http://localhost:11434"  # Default
         
         self.result = SageConfig(
             project_path=self.project_path,
-            api_key=api_key,
+            api_key=api_key if api_key else "not-required",  # Handle empty API key for Ollama
             llm_provider=provider_key,
-            llm_model=self.model_var.get(),
-            document_language=language_code
+            llm_model=selected_model,
+            document_language=language_code,
+            ollama_url=ollama_url if provider_key == "ollama" else None
         )
         
         # Save configuration
