@@ -20,7 +20,11 @@ class ModelManager:
         "google": [
             "gemini-1.5-flash", 
             "gemini-1.5-pro", 
+            "gemini-2.0-flash",
             "gemini-2.0-flash-exp",
+            "gemini-2.5-flash",
+            "gemini-2.5-pro",
+            "gemini-2.0-pro",
             "gemini-exp-1206"
         ],
         "anthropic": [
@@ -29,8 +33,9 @@ class ModelManager:
             "claude-3-opus-20240229",
             "claude-3-5-sonnet-20241022",
             "claude-3-5-haiku-20241022",
-            "claude-4-latest",
-            "claude-4-preview"
+            "claude-sonnet-4",
+            "claude-opus-4-1-20250805",
+            "claude-4-latest"
         ],
         "openai": [
             "gpt-3.5-turbo",
@@ -39,8 +44,9 @@ class ModelManager:
             "gpt-4-turbo-preview", 
             "gpt-4o",
             "gpt-4o-mini",
-            "gpt-5-preview",
-            "gpt-5-turbo",
+            "gpt-5",
+            "gpt-5-mini",
+            "gpt-5-nano",
             "o1-preview",
             "o1-mini"
         ],
@@ -197,18 +203,26 @@ class ModelManager:
         descriptions = {
             ("google", "gemini-1.5-flash"): "⚡ Fast, efficient model for most tasks",
             ("google", "gemini-1.5-pro"): "🧠 High-quality model for complex reasoning",
-            ("google", "gemini-2.0-flash-exp"): "🚀 Latest experimental model with enhanced speed",
+            ("google", "gemini-2.0-flash"): "🚀 Latest stable model with enhanced speed",
+            ("google", "gemini-2.0-flash-exp"): "🔬 Experimental model with latest features",
+            ("google", "gemini-2.5-flash"): "✨ Newest workhorse model with thinking",
+            ("google", "gemini-2.5-pro"): "🧠 State-of-the-art thinking model",
+            ("google", "gemini-2.0-pro"): "🧠 Pro model with 2M context window",
             
             ("anthropic", "claude-3-haiku-20240307"): "⚡ Fast, cost-effective model", 
             ("anthropic", "claude-3-sonnet-20240229"): "⚖️ Balanced performance and speed",
             ("anthropic", "claude-3-opus-20240229"): "🏆 Most capable Claude 3 model",
             ("anthropic", "claude-3-5-sonnet-20241022"): "🎯 Latest Claude 3.5 with improved capabilities",
-            ("anthropic", "claude-4-latest"): "🔮 Future Claude 4 (when available)",
+            ("anthropic", "claude-sonnet-4"): "🚀 Claude Sonnet 4 - Latest production model",
+            ("anthropic", "claude-opus-4-1-20250805"): "🏆 Claude Opus 4.1 - Most capable model",
+            ("anthropic", "claude-4-latest"): "🔮 Future Claude 4 placeholder",
             
             ("openai", "gpt-4o"): "🖼️ Multimodal model with vision capabilities",
             ("openai", "gpt-4o-mini"): "💨 Faster, cheaper version of GPT-4o",
             ("openai", "o1-preview"): "🧮 Advanced reasoning model for complex problems",
-            ("openai", "gpt-5-preview"): "🔮 Future GPT-5 (when available)",
+            ("openai", "gpt-5"): "🚀 GPT-5 - Latest generation model",
+            ("openai", "gpt-5-mini"): "⚡ GPT-5 Mini - Faster, cost-effective GPT-5",
+            ("openai", "gpt-5-nano"): "💨 GPT-5 Nano - Ultra-fast GPT-5 variant",
             
             ("ollama", "llama3.1:8b"): "🦙 Fast local model, good for most tasks (4GB)",
             ("ollama", "llama3.1:70b"): "🦙 High-quality local model (40GB)",
@@ -226,17 +240,19 @@ class ModelManager:
         
         # Speed (fastest available)
         if "google" in configured:
-            recommendations["speed"] = ("google", "gemini-2.0-flash-exp")
+            recommendations["speed"] = ("google", "gemini-2.5-flash")
         elif "anthropic" in configured:
             recommendations["speed"] = ("anthropic", "claude-3-5-sonnet-20241022")
         elif "ollama" in configured:
             recommendations["speed"] = ("ollama", "llama3.2:3b")
             
         # Quality (best available)
-        if "anthropic" in configured:
-            recommendations["quality"] = ("anthropic", "claude-4-latest")
+        if "google" in configured:
+            recommendations["quality"] = ("google", "gemini-2.5-pro")
+        elif "anthropic" in configured:
+            recommendations["quality"] = ("anthropic", "claude-opus-4-1-20250805")
         elif "openai" in configured:
-            recommendations["quality"] = ("openai", "gpt-5-preview")
+            recommendations["quality"] = ("openai", "gpt-5")
         elif "ollama" in configured:
             recommendations["quality"] = ("ollama", "llama3.1:70b")
             

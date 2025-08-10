@@ -39,8 +39,12 @@ class SetupWindow:
         # Google Gemini Models
         "gemini-1.5-flash": "⚡ FAST & EFFICIENT - Best for general tasks, quick responses\nEmbeddings: Excellent multilingual support (Vietnamese, Chinese, etc.)\nSpeed: Very Fast | Cost: Low | Quality: Good",
         "gemini-1.5-pro": "🧠 HIGH QUALITY - Best for complex reasoning and analysis\nEmbeddings: Best-in-class semantic understanding\nSpeed: Medium | Cost: Medium | Quality: Excellent",
-        "gemini-2.0-flash-exp": "🚀 LATEST EXPERIMENTAL - Cutting-edge speed + quality\nEmbeddings: Latest Google embedding technology\nSpeed: Very Fast | Cost: Low | Quality: Very Good",
-        "gemini-exp-1206": "🔬 EXPERIMENTAL - Google's latest research model\nEmbeddings: Advanced experimental features\nSpeed: Medium | Cost: Medium | Quality: Experimental",
+        "gemini-2.0-flash": "🚀 LATEST STABLE - Cutting-edge speed + quality\nEmbeddings: Latest Google embedding technology\nSpeed: Very Fast | Cost: Low | Quality: Very Good",
+        "gemini-2.0-flash-exp": "🔬 EXPERIMENTAL - Latest experimental features\nEmbeddings: Advanced experimental Google tech\nSpeed: Very Fast | Cost: Low | Quality: Experimental",
+        "gemini-2.5-flash": "✨ NEWEST RELEASE - Most efficient workhorse model\nEmbeddings: Latest Google embedding with thinking\nSpeed: Very Fast | Cost: Very Low | Quality: Excellent",
+        "gemini-2.5-pro": "🧠 STATE-OF-THE-ART - Best thinking model for complex reasoning\nEmbeddings: Latest Google embedding with deep reasoning\nSpeed: Medium | Cost: Medium | Quality: Excellent (Thinking)",
+        "gemini-2.0-pro": "🧠 PRO QUALITY - Enhanced reasoning with 2M context\nEmbeddings: Best-in-class semantic understanding\nSpeed: Medium | Cost: Medium | Quality: Excellent",
+        "gemini-exp-1206": "🔬 RESEARCH - Google's experimental research model\nEmbeddings: Advanced experimental features\nSpeed: Medium | Cost: Medium | Quality: Experimental",
         
         # Anthropic Claude Models
         "claude-3-haiku-20240307": "💨 FASTEST CLAUDE - Quick responses, cost-effective\nEmbeddings: Uses OpenAI (Anthropic has no embeddings)\nSpeed: Very Fast | Cost: Low | Quality: Good",
@@ -48,8 +52,9 @@ class SetupWindow:
         "claude-3-opus-20240229": "🏆 MOST CAPABLE - Best Claude 3, complex tasks\nEmbeddings: Uses OpenAI embeddings\nSpeed: Slow | Cost: High | Quality: Excellent",
         "claude-3-5-sonnet-20241022": "🎯 LATEST CLAUDE - Enhanced reasoning and coding\nEmbeddings: Uses OpenAI embeddings\nSpeed: Fast | Cost: Medium | Quality: Excellent",
         "claude-3-5-haiku-20241022": "⚡ FAST CLAUDE 3.5 - Quick and smart\nEmbeddings: Uses OpenAI embeddings\nSpeed: Very Fast | Cost: Low | Quality: Very Good",
-        "claude-4-latest": "🔮 FUTURE CLAUDE 4 - Next generation (when available)\nEmbeddings: Uses OpenAI embeddings\nSpeed: TBD | Cost: TBD | Quality: Expected Excellent",
-        "claude-4-preview": "🔮 CLAUDE 4 PREVIEW - Early access (when available)\nEmbeddings: Uses OpenAI embeddings\nSpeed: TBD | Cost: TBD | Quality: Expected Excellent",
+        "claude-sonnet-4": "🚀 CLAUDE SONNET 4 - Latest production model (available now)\nEmbeddings: Uses OpenAI embeddings\nSpeed: Fast | Cost: Medium | Quality: Excellent",
+        "claude-opus-4-1-20250805": "🏆 CLAUDE OPUS 4.1 - Most capable Claude model\nEmbeddings: Uses OpenAI embeddings\nSpeed: Medium | Cost: High | Quality: Excellent",
+        "claude-4-latest": "🔮 FUTURE CLAUDE 4 - Next generation placeholder\nEmbeddings: Uses OpenAI embeddings\nSpeed: TBD | Cost: TBD | Quality: Expected Excellent",
         
         # OpenAI GPT Models
         "gpt-3.5-turbo": "💰 COST-EFFECTIVE - Good for basic tasks, very cheap\nEmbeddings: Good multilingual support\nSpeed: Fast | Cost: Very Low | Quality: Good",
@@ -58,8 +63,9 @@ class SetupWindow:
         "gpt-4-turbo-preview": "🔬 GPT-4 PREVIEW - Latest GPT-4 improvements\nEmbeddings: Latest OpenAI embedding tech\nSpeed: Fast | Cost: Medium | Quality: Very Good",
         "gpt-4o": "🖼️ MULTIMODAL - Vision + text, very capable\nEmbeddings: Advanced multimodal understanding\nSpeed: Fast | Cost: Medium | Quality: Excellent",
         "gpt-4o-mini": "💨 FAST GPT-4O - Cheaper, faster version of GPT-4o\nEmbeddings: Good speed and quality balance\nSpeed: Very Fast | Cost: Low | Quality: Very Good",
-        "gpt-5-preview": "🔮 FUTURE GPT-5 - Next generation (when available)\nEmbeddings: Expected best-in-class\nSpeed: TBD | Cost: TBD | Quality: Expected Excellent",
-        "gpt-5-turbo": "🔮 FAST GPT-5 - Optimized GPT-5 (when available)\nEmbeddings: Expected excellent with speed\nSpeed: TBD | Cost: TBD | Quality: Expected Excellent",
+        "gpt-5": "🚀 GPT-5 - Latest generation model (available now)\nEmbeddings: Best-in-class OpenAI embeddings\nSpeed: Medium | Cost: High | Quality: Excellent",
+        "gpt-5-mini": "⚡ GPT-5 MINI - Faster, cost-effective GPT-5\nEmbeddings: Excellent with speed optimization\nSpeed: Fast | Cost: Medium | Quality: Very Good",
+        "gpt-5-nano": "💨 GPT-5 NANO - Ultra-fast GPT-5 variant\nEmbeddings: Good speed and efficiency\nSpeed: Very Fast | Cost: Low | Quality: Good",
         "o1-preview": "🧮 REASONING EXPERT - Best for math, logic, complex problems\nEmbeddings: Specialized for analytical tasks\nSpeed: Slow | Cost: High | Quality: Excellent (Reasoning)",
         "o1-mini": "🧮 MINI REASONING - Faster reasoning model\nEmbeddings: Good for logical tasks\nSpeed: Medium | Cost: Medium | Quality: Very Good (Reasoning)",
         
@@ -95,7 +101,11 @@ class SetupWindow:
         "google": [
             "gemini-1.5-flash", 
             "gemini-1.5-pro", 
+            "gemini-2.0-flash",
             "gemini-2.0-flash-exp",
+            "gemini-2.5-flash",
+            "gemini-2.5-pro",
+            "gemini-2.0-pro",
             "gemini-exp-1206"
         ],
         "anthropic": [
@@ -104,8 +114,9 @@ class SetupWindow:
             "claude-3-opus-20240229",
             "claude-3-5-sonnet-20241022",
             "claude-3-5-haiku-20241022",
-            "claude-4-latest",  # Future Claude 4
-            "claude-4-preview"  # Future Claude 4 preview
+            "claude-sonnet-4",
+            "claude-opus-4-1-20250805",
+            "claude-4-latest"  # Future placeholder
         ],
         "openai": [
             "gpt-3.5-turbo",
@@ -114,8 +125,9 @@ class SetupWindow:
             "gpt-4-turbo-preview", 
             "gpt-4o",
             "gpt-4o-mini",
-            "gpt-5-preview",  # Future GPT-5
-            "gpt-5-turbo",    # Future GPT-5 turbo
+            "gpt-5",          # Available now
+            "gpt-5-mini",     # Available now
+            "gpt-5-nano",     # Available now
             "o1-preview",
             "o1-mini"
         ],
