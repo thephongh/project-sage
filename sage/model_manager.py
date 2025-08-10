@@ -60,8 +60,11 @@ class ModelManager:
     def __init__(self, config: SageConfig):
         self.config = config
         self.active_clients: Dict[str, LLMClient] = {}
-        self.current_provider = config.llm_provider
-        self.current_model = config.llm_model
+        
+        # Use chat provider/model as current, with fallback to legacy
+        chat_provider, chat_model = config.get_chat_provider_model()
+        self.current_provider = chat_provider
+        self.current_model = chat_model
         
     def get_available_models(self) -> Dict[str, List[str]]:
         """Get all available models organized by provider."""

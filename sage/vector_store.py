@@ -33,25 +33,37 @@ class VectorStore:
         
     def _get_embeddings(self):
         """Get the appropriate embeddings model based on provider."""
-        api_key = self.config.api_key.get_secret_value()
+        # Use index provider and API key for embeddings
+        index_provider, index_model = self.config.get_index_provider_model()
+        api_key = self.config.get_index_api_key()
         
-        if self.config.llm_provider == "google":
+        if index_provider == "google":
             return GoogleGenerativeAIEmbeddings(
-                model="models/text-embedding-004",
-                google_api_key=api_key
+                model="models/text-embedding-004",  # Best multilingual model for Vietnamese
+                google_api_key=api_key,
+                task_type="RETRIEVAL_DOCUMENT"  # Optimize for document search
             )
-        elif self.config.llm_provider == "anthropic":
+        elif index_provider == "anthropic":
             # Anthropic doesn't have native embeddings, use OpenAI as fallback
-            # User would need to provide OpenAI API key for embeddings
+            # Get OpenAI API key for embeddings
+            openai_key = self.config._get_provider_api_key("openai")
+            if not openai_key:
+                raise ValueError(
+                    "Anthropic provider selected for indexing but no OpenAI API key found for embeddings. "
+                    "Either provide an OpenAI API key or choose a different index provider with native embeddings."
+                )
             return OpenAIEmbeddings(
-                model="text-embedding-3-small"
+                model="text-embedding-3-large",  # Larger model for better comprehension
+                openai_api_key=openai_key,
+                dimensions=3072  # Full dimensions for maximum quality
             )
-        elif self.config.llm_provider == "openai":
+        elif index_provider == "openai":
             return OpenAIEmbeddings(
-                model="text-embedding-3-small",
-                openai_api_key=api_key
+                model="text-embedding-3-large",  # Use large model for better quality
+                openai_api_key=api_key,
+                dimensions=3072  # Full dimensions for comprehensive embeddings
             )
-        elif self.config.llm_provider == "ollama":
+        elif index_provider == "ollama":
             # For Ollama, try to use Ollama embeddings first, fall back to local HuggingFace
             base_url = self.config.ollama_url or "http://localhost:11434"
             
@@ -79,7 +91,7 @@ class VectorStore:
                     "2. HuggingFace embeddings. Install with: pip install sentence-transformers"
                 )
         else:
-            raise ValueError(f"Unsupported provider: {self.config.llm_provider}")
+            raise ValueError(f"Unsupported index provider: {index_provider}")
             
     def initialize(self):
         """Initialize or load the vector store."""

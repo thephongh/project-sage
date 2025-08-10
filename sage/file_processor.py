@@ -28,7 +28,8 @@ class FileProcessor:
         '.pdf', '.docx', '.pptx', '.xlsx', '.txt', '.md'
     }
     
-    def __init__(self, chunk_size: int = 1000, chunk_overlap: int = 200, ocr_language: str = "eng"):
+    def __init__(self, chunk_size: int = 1500, chunk_overlap: int = 300, ocr_language: str = "eng"):
+        # Enhanced chunk size for better context preservation
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
         self.ocr_language = ocr_language
@@ -36,9 +37,63 @@ class FileProcessor:
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
             length_function=len,
-            separators=["\n\n", "\n", ". ", " ", ""]
+            # Better separators for Vietnamese and structured documents
+            separators=["\n\n", "\n", ". ", "。", "! ", "? ", " ", ""]
         )
         self.metadata_file = ".sage/file_metadata.json"
+    
+    def _extract_folder_context(self, file_path: Path, project_path: Path) -> Dict[str, str]:
+        """Extract hierarchical context from folder structure."""
+        try:
+            # Get relative path from project root
+            rel_path = file_path.relative_to(project_path)
+            path_parts = list(rel_path.parts[:-1])  # Exclude filename
+            
+            # Create hierarchical context
+            context = {
+                "project_category": "",
+                "main_phase": "",
+                "sub_category": "",
+                "specific_area": "",
+                "folder_hierarchy": " > ".join(path_parts) if path_parts else "root"
+            }
+            
+            if len(path_parts) >= 1:
+                # Main project phase (01.Origination&Dev, 02.Execution, 03.Operation)
+                context["main_phase"] = path_parts[0]
+                
+            if len(path_parts) >= 2:
+                # Project category (Project_Management, ACES, Studies_Design, etc.)
+                context["project_category"] = path_parts[1]
+                
+            if len(path_parts) >= 3:
+                # Sub category (Meetings, Budget_DevEx, etc.)
+                context["sub_category"] = path_parts[2]
+                
+            if len(path_parts) >= 4:
+                # Specific area (detailed breakdown)
+                context["specific_area"] = path_parts[3]
+            
+            # Create descriptive context for embeddings
+            if context["main_phase"]:
+                phase_desc = {
+                    "01.Origination&Dev": "Project Development and Origination Phase",
+                    "02.Execution": "Project Construction and Execution Phase", 
+                    "03.Operation": "Project Operation and Maintenance Phase"
+                }.get(context["main_phase"], context["main_phase"])
+                context["phase_description"] = phase_desc
+            
+            return context
+            
+        except Exception:
+            return {
+                "project_category": "unknown",
+                "main_phase": "unknown", 
+                "sub_category": "unknown",
+                "specific_area": "unknown",
+                "folder_hierarchy": "unknown",
+                "phase_description": "Unknown project phase"
+            }
         
     def load_metadata(self, project_path: Path) -> Dict[str, Dict]:
         """Load file metadata from cache."""
@@ -83,8 +138,8 @@ class FileProcessor:
                     
         return files_to_process
         
-    def process_file(self, file_path: Path) -> List[Document]:
-        """Process a single file and return documents."""
+    def process_file(self, file_path: Path, project_path: Path = None) -> List[Document]:
+        """Process a single file and return documents with enhanced context."""
         ext = file_path.suffix.lower()
         
         try:
@@ -104,25 +159,51 @@ class FileProcessor:
                 elements = partition(filename=str(file_path))
                 
             # Convert elements to text
-            text = "\n\n".join([str(el) for el in elements])
+            original_text = "\n\n".join([str(el) for el in elements])
             
-            # Create documents with metadata
+            # Extract folder context if project_path provided
+            folder_context = {}
+            context_prefix = ""
+            if project_path:
+                folder_context = self._extract_folder_context(file_path, project_path)
+                # Create context prefix to help with embeddings
+                context_prefix = f"""
+Document Context:
+- Project Phase: {folder_context.get('phase_description', 'Unknown')}
+- Category: {folder_context.get('project_category', 'Unknown')}
+- Location: {folder_context.get('folder_hierarchy', 'Unknown')}
+- File: {file_path.name}
+
+Content:
+"""
+            
+            # Enhance text with context for better embeddings
+            enhanced_text = context_prefix + original_text
+            
+            # Create comprehensive metadata
             metadata = {
                 "source": str(file_path),
                 "file_type": ext,
-                "processed_at": datetime.now().isoformat()
+                "processed_at": datetime.now().isoformat(),
+                **folder_context  # Include all folder context
             }
             
-            # Split text into chunks
+            # Split enhanced text into chunks
             documents = self.text_splitter.create_documents(
-                texts=[text],
+                texts=[enhanced_text],
                 metadatas=[metadata]
             )
             
-            # Add chunk index to metadata
+            # Add chunk index and ensure context is preserved
             for i, doc in enumerate(documents):
                 doc.metadata["chunk_index"] = i
                 doc.metadata["total_chunks"] = len(documents)
+                # Add search-friendly context
+                doc.metadata["search_context"] = (
+                    f"{folder_context.get('phase_description', '')} "
+                    f"{folder_context.get('project_category', '')} "
+                    f"{folder_context.get('folder_hierarchy', '')}"
+                ).strip()
                 
             return documents
             

@@ -159,9 +159,10 @@ class SetupWindow:
         
         # Create main window
         self.root = ctk.CTk()
-        self.root.title("Project Sage Setup")
-        self.root.geometry("700x650")
-        self.root.resizable(False, False)
+        self.root.title("Project Sage Setup - Separate Index & Chat Models")
+        self.root.geometry("900x700")
+        self.root.resizable(True, True)
+        self.root.minsize(800, 600)
         
         # Tooltip for model descriptions
         self.tooltip_window = None
@@ -192,80 +193,21 @@ class SetupWindow:
         )
         path_value.pack(anchor="w", padx=10, pady=(0, 10))
         
-        # Provider selection
-        provider_label = ctk.CTkLabel(self.root, text="LLM Provider:")
-        provider_label.pack(anchor="w", padx=30, pady=(10, 0))
+        # Create main notebook for separate model selection
+        self.model_notebook = ctk.CTkTabview(self.root)
+        self.model_notebook.pack(pady=10, padx=20, fill="both", expand=True)
         
-        self.provider_var = ctk.StringVar(value="Google Gemini")
-        self.provider_menu = ctk.CTkOptionMenu(
-            self.root,
-            values=list(self.PROVIDERS.keys()),
-            variable=self.provider_var,
-            command=self._on_provider_change
-        )
-        self.provider_menu.pack(padx=30, pady=5, fill="x")
+        # Indexing (Embedding) Configuration Tab
+        self.index_tab = self.model_notebook.add("📚 Indexing & Embeddings")
+        self._create_index_config_section()
         
-        # Model selection with tooltip
-        model_frame = ctk.CTkFrame(self.root, fg_color="transparent")
-        model_frame.pack(fill="x", padx=30, pady=(10, 0))
+        # Chat Configuration Tab  
+        self.chat_tab = self.model_notebook.add("💬 Chat & Responses")
+        self._create_chat_config_section()
         
-        model_label = ctk.CTkLabel(model_frame, text="Model:")
-        model_label.pack(anchor="w")
-        
-        # Info button for model descriptions
-        info_button = ctk.CTkButton(
-            model_frame,
-            text="ℹ️ Model Info",
-            width=100,
-            height=25,
-            command=self._show_model_info
-        )
-        info_button.pack(anchor="e", pady=(0, 5))
-        
-        self.model_var = ctk.StringVar(value="gemini-1.5-flash")
-        self.model_menu = ctk.CTkOptionMenu(
-            self.root,
-            values=self.MODELS["google"],
-            variable=self.model_var,
-            command=self._on_model_change
-        )
-        self.model_menu.pack(padx=30, pady=(0, 5), fill="x")
-        
-        # Model description label
-        self.model_desc_label = ctk.CTkLabel(
-            self.root,
-            text=self.MODEL_DESCRIPTIONS.get("gemini-1.5-flash", ""),
-            font=ctk.CTkFont(size=11),
-            text_color="gray",
-            wraplength=600,
-            justify="left"
-        )
-        self.model_desc_label.pack(padx=30, pady=(0, 10), fill="x")
-        
-        # API key input (conditional)
-        self.api_label = ctk.CTkLabel(self.root, text="API Key:")
-        self.api_label.pack(anchor="w", padx=30, pady=(10, 0))
-        
-        self.api_entry = ctk.CTkEntry(
-            self.root, 
-            placeholder_text="Paste your API key here (not needed for Ollama)",
-            show="*"
-        )
-        self.api_entry.pack(padx=30, pady=5, fill="x")
-        
-        # Ollama URL input (initially hidden)
-        self.ollama_label = ctk.CTkLabel(self.root, text="Ollama Base URL:")
-        self.ollama_entry = ctk.CTkEntry(
-            self.root,
-            placeholder_text="http://localhost:11434 (default)"
-        )
-        
-        # Custom model input (initially hidden)
-        self.custom_model_label = ctk.CTkLabel(self.root, text="Custom Model Name:")
-        self.custom_model_entry = ctk.CTkEntry(
-            self.root,
-            placeholder_text="Enter custom model name (e.g., my-model:latest)"
-        )
+        # API Keys Tab
+        self.api_tab = self.model_notebook.add("🔑 API Keys")
+        self._create_api_keys_section()
         
         # Language selection
         lang_label = ctk.CTkLabel(self.root, text="Document Language (for OCR):")
@@ -425,6 +367,223 @@ class SetupWindow:
             width=100
         )
         close_button.pack(pady=15)
+    
+    def _create_index_config_section(self):
+        """Create the indexing/embeddings configuration section."""
+        # Info section
+        info_frame = ctk.CTkFrame(self.index_tab)
+        info_frame.pack(fill="x", padx=10, pady=10)
+        
+        info_text = ctk.CTkLabel(
+            info_frame,
+            text="🔍 Indexing Configuration\n\n"
+            "This model will be used to create embeddings for your documents. "
+            "For best multilingual support (Vietnamese, Chinese, etc.), use Google models. "
+            "The indexing model affects search quality but not chat responses.",
+            font=ctk.CTkFont(size=12),
+            wraplength=600,
+            justify="left"
+        )
+        info_text.pack(padx=15, pady=15)
+        
+        # Provider selection for indexing
+        index_provider_label = ctk.CTkLabel(self.index_tab, text="Indexing Provider:")
+        index_provider_label.pack(anchor="w", padx=20, pady=(10, 0))
+        
+        self.index_provider_var = ctk.StringVar(value="Google Gemini")
+        self.index_provider_menu = ctk.CTkOptionMenu(
+            self.index_tab,
+            values=list(self.PROVIDERS.keys()),
+            variable=self.index_provider_var,
+            command=self._on_index_provider_change
+        )
+        self.index_provider_menu.pack(padx=20, pady=5, fill="x")
+        
+        # Model selection for indexing
+        index_model_label = ctk.CTkLabel(self.index_tab, text="Indexing Model:")
+        index_model_label.pack(anchor="w", padx=20, pady=(10, 0))
+        
+        self.index_model_var = ctk.StringVar(value="gemini-1.5-flash")
+        self.index_model_menu = ctk.CTkOptionMenu(
+            self.index_tab,
+            values=self.MODELS["google"],
+            variable=self.index_model_var,
+            command=self._on_index_model_change
+        )
+        self.index_model_menu.pack(padx=20, pady=5, fill="x")
+        
+        # Index model description
+        self.index_desc_label = ctk.CTkLabel(
+            self.index_tab,
+            text=self.MODEL_DESCRIPTIONS.get("gemini-1.5-flash", ""),
+            font=ctk.CTkFont(size=10),
+            text_color="gray",
+            wraplength=600,
+            justify="left"
+        )
+        self.index_desc_label.pack(padx=20, pady=(5, 10), fill="x")
+        
+    def _create_chat_config_section(self):
+        """Create the chat configuration section."""
+        # Info section
+        info_frame = ctk.CTkFrame(self.chat_tab)
+        info_frame.pack(fill="x", padx=10, pady=10)
+        
+        info_text = ctk.CTkLabel(
+            info_frame,
+            text="💬 Chat Configuration\n\n"
+            "This model will be used for generating responses in chat. "
+            "You can switch chat models anytime in the GUI, but the indexing model is fixed. "
+            "Choose based on your preferred balance of speed, quality, and cost.",
+            font=ctk.CTkFont(size=12),
+            wraplength=600,
+            justify="left"
+        )
+        info_text.pack(padx=15, pady=15)
+        
+        # Provider selection for chat
+        chat_provider_label = ctk.CTkLabel(self.chat_tab, text="Chat Provider:")
+        chat_provider_label.pack(anchor="w", padx=20, pady=(10, 0))
+        
+        self.chat_provider_var = ctk.StringVar(value="Google Gemini")
+        self.chat_provider_menu = ctk.CTkOptionMenu(
+            self.chat_tab,
+            values=list(self.PROVIDERS.keys()),
+            variable=self.chat_provider_var,
+            command=self._on_chat_provider_change
+        )
+        self.chat_provider_menu.pack(padx=20, pady=5, fill="x")
+        
+        # Model selection for chat
+        chat_model_label = ctk.CTkLabel(self.chat_tab, text="Chat Model:")
+        chat_model_label.pack(anchor="w", padx=20, pady=(10, 0))
+        
+        self.chat_model_var = ctk.StringVar(value="gemini-1.5-flash")
+        self.chat_model_menu = ctk.CTkOptionMenu(
+            self.chat_tab,
+            values=self.MODELS["google"],
+            variable=self.chat_model_var,
+            command=self._on_chat_model_change
+        )
+        self.chat_model_menu.pack(padx=20, pady=5, fill="x")
+        
+        # Chat model description
+        self.chat_desc_label = ctk.CTkLabel(
+            self.chat_tab,
+            text=self.MODEL_DESCRIPTIONS.get("gemini-1.5-flash", ""),
+            font=ctk.CTkFont(size=10),
+            text_color="gray",
+            wraplength=600,
+            justify="left"
+        )
+        self.chat_desc_label.pack(padx=20, pady=(5, 10), fill="x")
+        
+        # Model info button
+        info_button = ctk.CTkButton(
+            self.chat_tab,
+            text="ℹ️ View All Model Details",
+            command=self._show_model_info,
+            width=200,
+            height=35
+        )
+        info_button.pack(padx=20, pady=10)
+        
+    def _create_api_keys_section(self):
+        """Create the API keys configuration section."""
+        # Info section
+        info_frame = ctk.CTkFrame(self.api_tab)
+        info_frame.pack(fill="x", padx=10, pady=10)
+        
+        info_text = ctk.CTkLabel(
+            info_frame,
+            text="🔑 API Keys Configuration\n\n"
+            "Provide API keys for the providers you want to use. You only need keys "
+            "for the providers you selected above. Ollama doesn't require an API key.",
+            font=ctk.CTkFont(size=12),
+            wraplength=600,
+            justify="left"
+        )
+        info_text.pack(padx=15, pady=15)
+        
+        # API key entries
+        self.api_entries = {}
+        
+        # Google API Key
+        google_frame = ctk.CTkFrame(self.api_tab)
+        google_frame.pack(fill="x", padx=20, pady=5)
+        
+        ctk.CTkLabel(google_frame, text="Google Gemini API Key:", font=ctk.CTkFont(weight="bold")).pack(anchor="w", padx=10, pady=(10, 0))
+        ctk.CTkLabel(google_frame, text="Get from: https://makersuite.google.com/app/apikey", font=ctk.CTkFont(size=10), text_color="gray").pack(anchor="w", padx=10)
+        
+        self.google_api_entry = ctk.CTkEntry(google_frame, placeholder_text="Enter Google API key", show="*", width=500)
+        self.google_api_entry.pack(padx=10, pady=(5, 10), fill="x")
+        self.api_entries["google"] = self.google_api_entry
+        
+        # Anthropic API Key
+        anthropic_frame = ctk.CTkFrame(self.api_tab)
+        anthropic_frame.pack(fill="x", padx=20, pady=5)
+        
+        ctk.CTkLabel(anthropic_frame, text="Anthropic Claude API Key:", font=ctk.CTkFont(weight="bold")).pack(anchor="w", padx=10, pady=(10, 0))
+        ctk.CTkLabel(anthropic_frame, text="Get from: https://console.anthropic.com/", font=ctk.CTkFont(size=10), text_color="gray").pack(anchor="w", padx=10)
+        
+        self.anthropic_api_entry = ctk.CTkEntry(anthropic_frame, placeholder_text="Enter Anthropic API key", show="*", width=500)
+        self.anthropic_api_entry.pack(padx=10, pady=(5, 10), fill="x")
+        self.api_entries["anthropic"] = self.anthropic_api_entry
+        
+        # OpenAI API Key
+        openai_frame = ctk.CTkFrame(self.api_tab)
+        openai_frame.pack(fill="x", padx=20, pady=5)
+        
+        ctk.CTkLabel(openai_frame, text="OpenAI GPT API Key:", font=ctk.CTkFont(weight="bold")).pack(anchor="w", padx=10, pady=(10, 0))
+        ctk.CTkLabel(openai_frame, text="Get from: https://platform.openai.com/api-keys", font=ctk.CTkFont(size=10), text_color="gray").pack(anchor="w", padx=10)
+        
+        self.openai_api_entry = ctk.CTkEntry(openai_frame, placeholder_text="Enter OpenAI API key", show="*", width=500)
+        self.openai_api_entry.pack(padx=10, pady=(5, 10), fill="x")
+        self.api_entries["openai"] = self.openai_api_entry
+        
+        # Ollama URL
+        ollama_frame = ctk.CTkFrame(self.api_tab)
+        ollama_frame.pack(fill="x", padx=20, pady=5)
+        
+        ctk.CTkLabel(ollama_frame, text="Ollama Base URL (optional):", font=ctk.CTkFont(weight="bold")).pack(anchor="w", padx=10, pady=(10, 0))
+        ctk.CTkLabel(ollama_frame, text="Default: http://localhost:11434", font=ctk.CTkFont(size=10), text_color="gray").pack(anchor="w", padx=10)
+        
+        self.ollama_entry = ctk.CTkEntry(ollama_frame, placeholder_text="http://localhost:11434", width=500)
+        self.ollama_entry.pack(padx=10, pady=(5, 10), fill="x")
+    
+    def _on_index_provider_change(self, choice):
+        """Handle indexing provider selection change."""
+        provider_key = self.PROVIDERS[choice]
+        models = self.MODELS[provider_key]
+        self.index_model_menu.configure(values=models)
+        self.index_model_var.set(models[0])
+        self._update_index_model_description(models[0])
+        
+    def _on_index_model_change(self, choice):
+        """Handle indexing model selection change."""
+        self._update_index_model_description(choice)
+        
+    def _update_index_model_description(self, model):
+        """Update the indexing model description."""
+        description = self.MODEL_DESCRIPTIONS.get(model, "Model description not available")
+        self.index_desc_label.configure(text=description)
+        
+    def _on_chat_provider_change(self, choice):
+        """Handle chat provider selection change."""
+        provider_key = self.PROVIDERS[choice]
+        models = self.MODELS[provider_key]
+        self.chat_model_menu.configure(values=models)
+        self.chat_model_var.set(models[0])
+        self._update_chat_model_description(models[0])
+        
+    def _on_chat_model_change(self, choice):
+        """Handle chat model selection change."""
+        self._update_chat_model_description(choice)
+        
+    def _update_chat_model_description(self, model):
+        """Update the chat model description."""
+        description = self.MODEL_DESCRIPTIONS.get(model, "Model description not available")
+        self.chat_desc_label.configure(text=description)
         
     def _on_provider_change(self, choice):
         """Handle provider selection change."""
@@ -571,31 +730,40 @@ class SetupWindow:
     
     def _on_initialize(self):
         """Handle initialization button click."""
-        provider_key = self.PROVIDERS[self.provider_var.get()]
-        api_key = self.api_entry.get().strip()
+        # Get indexing configuration
+        index_provider_key = self.PROVIDERS[self.index_provider_var.get()]
+        index_model = self.index_model_var.get()
+        
+        # Get chat configuration  
+        chat_provider_key = self.PROVIDERS[self.chat_provider_var.get()]
+        chat_model = self.chat_model_var.get()
         
         # Get language code early for Tesseract check
         language_code = self.LANGUAGES[self.lang_var.get()]
         
-        # Validate inputs based on provider
-        if provider_key != "ollama" and not api_key:
+        # Collect API keys
+        api_keys = {}
+        required_providers = {index_provider_key, chat_provider_key}
+        
+        for provider in required_providers:
+            if provider != "ollama":  # Ollama doesn't need API key
+                if provider in self.api_entries:
+                    key = self.api_entries[provider].get().strip()
+                    if not key:
+                        self.status_label.configure(
+                            text=f"Please enter an API key for {provider.title()}",
+                            text_color="red"
+                        )
+                        return
+                    api_keys[provider] = key
+        
+        # Validate that at least one API key is provided for non-Ollama setups
+        if not api_keys and "ollama" not in required_providers:
             self.status_label.configure(
-                text="Please enter an API key",
+                text="Please provide at least one API key",
                 text_color="red"
             )
             return
-            
-        # Get model name (handle custom models)
-        selected_model = self.model_var.get()
-        if selected_model == "custom-model" and provider_key == "ollama":
-            custom_model = self.custom_model_entry.get().strip()
-            if not custom_model:
-                self.status_label.configure(
-                    text="Please enter a custom model name",
-                    text_color="red"
-                )
-                return
-            selected_model = custom_model
             
         # Final status update
         self.status_label.configure(
@@ -624,29 +792,51 @@ class SetupWindow:
         
         # Get Ollama URL if applicable
         ollama_url = None
-        if provider_key == "ollama":
+        if "ollama" in required_providers:
             ollama_url = self.ollama_entry.get().strip()
             if not ollama_url:
                 ollama_url = "http://localhost:11434"  # Default
         
+        # Create configuration with separate index and chat settings
+        from pydantic import SecretStr
+        
+        # Use the first provided API key as the primary key for backwards compatibility
+        primary_key = list(api_keys.values())[0] if api_keys else "not-required"
+        primary_provider = index_provider_key  # Use index provider as primary
+        
         self.result = SageConfig(
             project_path=self.project_path,
-            api_key=api_key if api_key else "not-required",  # Handle empty API key for Ollama
-            llm_provider=provider_key,
-            llm_model=selected_model,
+            # Backwards compatibility fields
+            api_key=SecretStr(primary_key),
+            llm_provider=primary_provider,
+            llm_model=index_model,
+            # New separate configuration
+            index_provider=index_provider_key,
+            index_model=index_model,
+            chat_provider=chat_provider_key,
+            chat_model=chat_model,
+            # API keys
+            google_api_key=SecretStr(api_keys.get("google", "")) if api_keys.get("google") else None,
+            anthropic_api_key=SecretStr(api_keys.get("anthropic", "")) if api_keys.get("anthropic") else None,
+            openai_api_key=SecretStr(api_keys.get("openai", "")) if api_keys.get("openai") else None,
+            # Other settings
             document_language=language_code,
-            ollama_url=ollama_url if provider_key == "ollama" else None
+            ollama_url=ollama_url
         )
         
         # Save configuration
         try:
             self.config_manager.save(self.result)
             self.status_label.configure(
-                text="Configuration saved successfully!",
+                text="Configuration saved successfully!\n"
+                f"Indexing: {index_provider_key.title()} {index_model}\n"
+                f"Chat: {chat_provider_key.title()} {chat_model}",
                 text_color="green"
             )
-            self.root.after(1000, self.root.quit)
+            self.root.after(2000, self.root.quit)
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             self.status_label.configure(
                 text=f"Error: {str(e)}",
                 text_color="red"

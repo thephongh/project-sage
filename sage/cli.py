@@ -108,7 +108,7 @@ def update(force: bool = typer.Option(False, "--force", "-f", help="Force full r
             progress.update(task, description=f"Processing {file_path.name}...")
             
             try:
-                documents = processor.process_file(file_path)
+                documents = processor.process_file(file_path, project_path)
                 if documents:
                     vector_store.add_documents(documents)
                     processor.update_metadata(project_path, file_path, documents)
@@ -158,9 +158,11 @@ def ask(query: str = typer.Argument(..., help="Your question about the project")
         console.print("[bold yellow]Knowledge base is empty. Run 'sage update' first.[/bold yellow]")
         raise typer.Exit(1)
         
-    # Search for relevant documents
+    # Search for relevant documents (increased for better multi-document coverage)
     with console.status("[bold blue]Searching knowledge base...[/bold blue]"):
-        documents = vector_store.search(query, k=5)
+        # Increase k for queries that likely need multiple documents
+        k_value = 10 if any(word in query.lower() for word in ['all', 'compare', 'across', 'multiple', 'summary', 'tổng hợp', 'tất cả']) else 5
+        documents = vector_store.search(query, k=k_value)
         
     if not documents:
         console.print("[yellow]No relevant documents found for your query.[/yellow]")
@@ -326,8 +328,9 @@ def chat():
             current_provider, current_model = model_manager.get_current_model_info()
             with console.status(f"[bold blue]🤖 {current_provider.title()} {current_model} is thinking...[/bold blue]"):
                 try:
-                    # Search for relevant documents
-                    documents = vector_store.search(question, k=5)
+                    # Search for relevant documents (adaptive k based on query complexity)
+                    k_value = 10 if any(word in question.lower() for word in ['all', 'compare', 'across', 'multiple', 'summary', 'tổng hợp', 'tất cả']) else 5
+                    documents = vector_store.search(question, k=k_value)
                     
                     if not documents:
                         console.print("[yellow]No relevant documents found for your question.[/yellow]")
